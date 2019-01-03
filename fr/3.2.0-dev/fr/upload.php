@@ -4,7 +4,7 @@
  * Upload Extensions. An extension for the phpBB Forum Software package.
  * French translation by Galixte (http://www.galixte.com)
  *
- * @copyright (c) 2017 Igor Lavrov <https://github.com/LavIgor> and John Peskens <http://ForumHulp.com>
+ * @copyright (c) 2019 Igor Lavrov <https://github.com/LavIgor> and John Peskens <http://ForumHulp.com>
  * @license GNU General Public License, version 2 (GPL-2.0)
  *
  */
