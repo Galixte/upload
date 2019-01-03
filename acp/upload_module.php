@@ -2,7 +2,7 @@
 /**
  *
  * @package       Upload Extensions
- * @copyright (c) 2014 - 2017 Igor Lavrov (https://github.com/LavIgor) and John Peskens (http://ForumHulp.com)
+ * @copyright (c) 2014 - 2019 Igor Lavrov (https://github.com/LavIgor) and John Peskens (http://ForumHulp.com)
  * @license       http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -612,7 +612,7 @@ class upload_module
 		if (sizeof($packages))
 		{
 			// Sanitize any data we retrieve from a server
-			$packages = objects::$request->escape($packages, true);
+			$packages = objects::$compatibility->escape($packages, true);
 			foreach ($packages as $ext => $value)
 			{
 				$latest_release = reset($value);

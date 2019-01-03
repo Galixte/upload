@@ -2,7 +2,7 @@
 /**
  *
  * @package       Upload Extensions
- * @copyright (c) 2014 - 2017 Igor Lavrov (https://github.com/LavIgor) and John Peskens (http://ForumHulp.com)
+ * @copyright (c) 2014 - 2019 Igor Lavrov (https://github.com/LavIgor) and John Peskens (http://ForumHulp.com)
  * @license       http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  *
  */
@@ -10,7 +10,6 @@
 namespace boardtools\upload\includes\compatibility;
 
 use \boardtools\upload\includes\objects;
-use \Symfony\Component\DependencyInjection\Definition;
 
 class v_3_2_x implements base
 {
@@ -113,6 +112,14 @@ class v_3_2_x implements base
 	/**
 	 * {@inheritdoc}
 	 */
+	public function escape($var, $multibyte)
+	{
+		return objects::$request->escape($var, $multibyte);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function filespec_get($file, $param)
 	{
 		switch ($param)
@@ -186,5 +193,13 @@ class v_3_2_x implements base
 				'AUTHOR_ROLE'		=> (isset($author['role'])) ? $author['role'] : '',
 			));
 		}
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function version_check(\phpbb\extension\metadata_manager $md_manager, $force_update = false, $force_cache = false, $stability = null)
+	{
+		return objects::$phpbb_extension_manager->version_check($md_manager, $force_update, $force_cache, $stability);
 	}
 }
