@@ -11,6 +11,7 @@ namespace boardtools\upload\includes\functions;
 
 use \boardtools\upload\includes\objects;
 use \boardtools\upload\includes\filetree\filetree;
+use \Michelf\MarkdownExtra;
 
 class load
 {
@@ -147,11 +148,10 @@ class load
 		}
 		else
 		{
+			updater::get_manager();
+
 			$display_name = objects::$md_manager->get_metadata('display-name');
 			objects::$compatibility->output_template_data(objects::$md_manager);
-
-			// Output update link to the template if Upload Extensions Updater is installed and updates are available.
-			updater::set_update_link();
 
 			// We output everything if this is an ajax request or if we load languages page for Upload Extensions.
 			if ($ext_show == 'languages' && $load_full_page)
@@ -206,7 +206,13 @@ class load
 			else
 			{
 				objects::$tpl_name = 'acp_ext_details';
+
+				// Updates are always checked for on standard (non-Ajax) page load.
+				updater::check_updates();
 			}
+
+			// Output update link to the template if Upload Extensions Updater is installed and updates are available.
+			updater::set_update_link();
 		}
 
 		if (file_exists(objects::$phpbb_root_path . 'ext/' . $ext_name . '/README.md') && !objects::$request->is_ajax())
@@ -254,12 +260,6 @@ class load
 			$ext_show = 'readme';
 		}
 
-		// TODO: Find a way to remove this inclusion.
-		if (!class_exists('\\Michelf\\MarkdownExtra'))
-		{
-			include objects::$phpbb_root_path . 'ext/boardtools/upload/vendor/michelf/php-markdown/Michelf/MarkdownExtra.inc.' . objects::$phpEx;
-		}
-
 		switch ($ext_show)
 		{
 			case 'faq':
@@ -269,7 +269,7 @@ class load
 				$string = @file_get_contents(objects::$phpbb_root_path . 'ext/' . $ext_name . '/README.md');
 				if ($string !== false)
 				{
-					$readme = \Michelf\MarkdownExtra::defaultTransform($string);
+					$readme = MarkdownExtra::defaultTransform($string);
 					if (!objects::$is_ajax && !$load_full_page)
 					{
 						objects::$template->assign_vars(array(
@@ -290,7 +290,7 @@ class load
 				$string = @file_get_contents(objects::$phpbb_root_path . 'ext/' . $ext_name . '/CHANGELOG.md');
 				if ($string !== false)
 				{
-					$changelog = \Michelf\MarkdownExtra::defaultTransform($string);
+					$changelog = MarkdownExtra::defaultTransform($string);
 					if (!objects::$is_ajax && !$load_full_page)
 					{
 						objects::$template->assign_vars(array(
